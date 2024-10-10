@@ -1,0 +1,61 @@
+#!/bin/bash
+# ---------------------------------------------------------------------------
+
+BROKER=192.168.100.26
+BOTID=BB-7be3
+
+# Send MQTT message
+bot () {
+    mosquitto_pub -h $BROKER -t /$BOTID/Command/Cmd -m "$*"
+}
+
+turn180 () {
+    for i in {1..6}; do
+        bot $1
+        sleep 0.5
+    done
+}
+
+bot SetMode Walk
+bot LayDown
+sleep 0.3
+bot Stand90Degrees
+sleep 0.3
+bot Stand
+sleep 0.3
+
+turn180 Left
+
+bot Stand
+sleep 0.5
+
+turn180 Right
+
+bot Stand
+bot Detach
+exit
+
+
+
+for i in {1..7}; do
+    bot Backward
+    sleep 0.5
+done
+
+bot Stand
+
+
+bot Stand
+
+exit
+
+for i in {1..7}; do
+    sleep 0.5
+    bot Left
+done
+
+
+
+bot "Stand"
+bot "Detach"
+sleep 2
